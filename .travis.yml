@@ -19,10 +19,13 @@ php:
   - 7.2
 
 env:
-  - PHPCS_VERSION="dev-master" LINT=1
-  - PHPCS_VERSION="3.1.0"
-  - PHPCS_VERSION="2.9.2"
-  - PHPCS_VERSION="2.6.0"
+  global:
+    - COVERALLS_PARALLEL=true
+  jobs:
+    - PHPCS_VERSION="dev-master" LINT=1
+    - PHPCS_VERSION="3.1.0"
+    - PHPCS_VERSION="2.9.2"
+    - PHPCS_VERSION="2.6.0"
 
 # Define the stages used.
 # For non-PRs, only the sniff and quicktest stages are run.
@@ -198,3 +201,6 @@ after_success:
     if [[ "$TRAVIS_BUILD_STAGE_NAME" == "Coverage" && $COVERALLS_VERSION == "^2.0" ]]; then
       php vendor/bin/php-coveralls -v -x build/logs/clover.xml
     fi
+
+notifications:
+  webhooks: https://coveralls.io/webhook
