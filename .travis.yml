@@ -39,7 +39,7 @@ stages:
   - name: test
     if: branch IN (master, develop)
   - name: coverage
-    if: branch IN (master, develop)
+    #if: branch IN (master, develop)
 
 jobs:
   fast_finish: true
@@ -69,26 +69,6 @@ jobs:
         # Check the code-style consistency of the xml files.
         - diff -B ./PHPCSUtils/ruleset.xml <(xmllint --format "./PHPCSUtils/ruleset.xml")
         - diff -B ./PHPCS23Utils/ruleset.xml <(xmllint --format "./PHPCS23Utils/ruleset.xml")
-
-    #### QUICK TEST STAGE ####
-    # This is a much quicker test which only runs the unit tests and linting against the low/high
-    # supported PHP/PHPCS combinations.
-    # These are basically the same builds as in the Coverage stage, but then without doing
-    # the code-coverage.
-    - stage: quicktest
-      php: 7.4
-      env: PHPCS_VERSION="dev-master" LINT=1
-    - stage: quicktest
-      php: 7.3
-      # PHPCS is only compatible with PHP 7.3 as of version 3.3.1/2.9.2.
-      env: PHPCS_VERSION="2.9.2"
-
-    - stage: quicktest
-      php: 5.4
-      env: PHPCS_VERSION="dev-master" LINT=1
-    - stage: quicktest
-      php: 5.4
-      env: PHPCS_VERSION="2.6.0"
 
     #### TEST STAGE ####
     # Additional builds to prevent issues with PHPCS versions incompatible with certain PHP versions.
